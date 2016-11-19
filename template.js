@@ -236,25 +236,6 @@ mouseClicked = function(){
   }
 };
 
-document.onkeypress = function(e){
-    e = e || event;
-    var chr = getChar(e);
-    if(chr.toLowerCase === 'a'){
-        
-    }
-    else if(chr.toLowerCase === 's'){
-        
-    }
-    else if(chr.toLowerCase === 'd'){
-        
-    }
-    else if(chr.toLowerCase === 'w'){
-           
-    }
-    else{
-        
-    }
-};
 
 
 
@@ -314,6 +295,5 @@ var draw = function(){
 		
 	}
 };
-
 
 }};
