@@ -181,6 +181,7 @@ zombie.prototype.draw = function() {
 zombie.prototype.move = function(){
         this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
         this.step.normalize();
+        this.step.mult(0.5);
         this.pos.add(this.step);   
 };
 
@@ -270,23 +271,24 @@ var draw = function(){
 		    line(user.pos.x + 70, user.pos.y-5, user.pos.x + 80, user.pos.y-5);
 		    line(user.pos.x + 110, user.pos.y-5, user.pos.x + 120, user.pos.y-5);
 		    fill(255, 123, 0);
-		    stroke(0, 0, 0);
-		    break;
+			stroke(0, 0, 0);
+			break;
 			
 		case 1:
 		    background(0,20,200);
 		    drawMap1();
-                    translate(user.pos.x+200, user.pos.y+200);
-          	    zombies[0].draw();
-           	    zombies[1].draw();
-        	    zombies[2].draw();
-       		    zombies[3].draw();
-        	    zombies[0].move();
-	            zombies[1].move();
-        	    zombies[2].move();
-	            zombies[3].move();
+            translate(user.pos.x+200, user.pos.y+200);
+            zombies[0].draw();
+            zombies[1].draw();
+            zombies[2].draw();
+            zombies[3].draw();
+            zombies[0].move();
+            zombies[1].move();
+            zombies[2].move();
+            zombies[3].move();
 		    user.draw();
-		    break;
+
+			break;
 		
 	}
 };
