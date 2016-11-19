@@ -26,8 +26,7 @@ var hero = function(x, y){
 
 hero.prototype.draw = function() {
     pushMatrix();
-    var y = this.pos.y - 200;
-    translate(-this.pos.x, -y);
+    translate(this.pos.x, this.pos.y);
     //Draw Head
     fill(255, 217, 66);
     rect(-4, -25, 8, 8);
@@ -216,11 +215,11 @@ var drawMap1 = function(){
 mouseClicked = function(){
   if (gameState === 0){
     gameState = 1;//Move on past start screen
-    zombies[0].pos.set(100,100,0);
-    zombies[1].pos.set(150, 50,0);
-    zombies[2].pos.set(200, 75,0);
-    zombies[3].pos.set(180, 90,0);
-    user.pos.set(-100, 0,0);
+    zombies[0].pos.set(100,100);
+    zombies[1].pos.set(150, 50);
+    zombies[2].pos.set(200, 75);
+    zombies[3].pos.set(180, 90);
+    user.pos.set(0, 0);
   }
 };
 
@@ -233,8 +232,12 @@ var draw = function(){
 		case 0:
 		    background(100, 100, 100);
 		    fill(255, 0, 0);
-		    bezier(0, 20, 200,200, 20, 250, 400, 20);
-		    bezier(250, 20, 300, 300, 310, 300, 400, 20);
+		    noStroke();
+		    bezier(50, 0, 75,200, 100, 150, 150, 0);
+		    bezier(250, 0, 300, 300, 310, 300, 420, 0);
+		    bezier(0,0, 20, 100, 30, 350, 50, 0);
+		    bezier(150, 0, 210, 300, 250, 310, 275, 0);
+		    stroke(0, 0, 0);
 		    fill(255, 255, 255);
 		    textSize(30);
 		    text("Zombie Island", 100, 100);
@@ -245,9 +248,7 @@ var draw = function(){
 		    zombies[1].draw();
 		    zombies[2].draw();
 		    zombies[3].draw();
-		    translate(0, 400);
 		    user.draw();
-		    translate(0, -400);
 		    stroke(300, 300, 0);
 		    triangle(user.pos.x+50, user.pos.y-5, user.pos.x+60, user.pos.y, user.pos.x+60, user.pos.y-10);
 		    line(user.pos.x + 90, user.pos.y-5, user.pos.x + 100, user.pos.y-5);
@@ -257,6 +258,7 @@ var draw = function(){
 			break;
 			
 		case 1:
+		    translate(-user.pos.x+50, -user.pos.y+100);
 		    background(0,20,200);
 		    drawMap1();
             zombies[0].draw();
@@ -268,5 +270,6 @@ var draw = function(){
 		
 	}
 };
+
 
 }};
