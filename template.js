@@ -1,7 +1,6 @@
 var sketchProc=function(processingInstance){ with (processingInstance){
 size(400, 400); 
 frameRate(60);
-background(255,0,0);
 /*
 Andrew Bryant
 Final Project
@@ -216,11 +215,11 @@ var drawMap1 = function(){
 mouseClicked = function(){
   if (gameState === 0){
     gameState = 1;//Move on past start screen
-    zombies[0].pos.set(100,100,0);
-    zombies[1].pos.set(150, 50,0);
-    zombies[2].pos.set(200, 75,0);
-    zombies[3].pos.set(180, 90,0);
-    user.pos.set(-100, 0,0);
+    zombies[0].pos.set(100,100);
+    zombies[1].pos.set(150, 50);
+    zombies[2].pos.set(200, 75);
+    zombies[3].pos.set(180, 90);
+    user.pos.set(-100, 0);
   }
 };
 
