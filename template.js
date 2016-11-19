@@ -94,8 +94,10 @@ hero.prototype.move = function(){
 
 hero.prototype.shoot = function(x, y){
     this.bullets.push(new PVector(this.pos.x, this.pos.y));
-    this.bulletDir.push(new PVector(this.pos.x - x, this.pos.y - y));
-    
+    this.bulletDir.push(new PVector(x-this.pos.x, y-this.pos.y));
+    var l = this.bulletDir.length;
+    this.bulletDir[l-1].normalize();
+    this.bulletDir[l-1].scale(3);
 };
 
 var user = new hero(50, 300);
@@ -187,6 +189,16 @@ zombies.push(new zombie(200, 290));
 zombies.push(new zombie(220, 350));
 zombies.push(new zombie(260, 320));
 
+/********** Shoot Bullet **********/
+var shootBullet = function(){
+    for(var i=0; i<user.bullets.length; i++){
+        user.bullets[i].add(user.bulletDir[i]);
+        point(user.bullets[i].x, user.bullets[i].y);
+        
+    }
+};
+
+
 /********** Map 1 **********/
 var map1 = [
         new PVector(-400, 0),
@@ -221,6 +233,9 @@ mouseClicked = function(){
     zombies[3].pos.set(180, 90);
     user.pos.set(0, 0);
   }
+  else{
+      user.shoot();
+  }
 };
 
 
@@ -228,7 +243,6 @@ mouseClicked = function(){
 /********** Draw function **********/
 var draw = function(){
 	switch(gameState){
-		
 		case 0:
 		    background(100, 100, 100);
 		    fill(255, 0, 0);
@@ -258,7 +272,6 @@ var draw = function(){
 			break;
 			
 		case 1:
-		    translate(-user.pos.x+50, -user.pos.y+100);
 		    background(0,20,200);
 		    drawMap1();
             zombies[0].draw();
@@ -266,10 +279,10 @@ var draw = function(){
             zombies[2].draw();
             zombies[3].draw();
 		    user.draw();
+			translate(user.pos.x+200, user.pos.y+200);
 			break;
 		
 	}
 };
-
 
 }};
