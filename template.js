@@ -20,8 +20,6 @@ var hero = function(x, y){
     this.pos = new PVector(x, y);
     this.step = new PVector(0,0);
     this.a = 0;
-    this.bullets = [];
-    this.bulletDir = [];
 };
 
 hero.prototype.draw = function() {
@@ -48,7 +46,7 @@ hero.prototype.draw = function() {
     point(3, -33);
     
     //Draw Legs
-    fill(0, 0, 0);
+    fill(50, 50, 50);
     rect(-7, 10, 7, 25, 5);
     rect(0, 10, 7, 25, 5);
     
@@ -92,13 +90,7 @@ hero.prototype.move = function(){
     
 };
 
-hero.prototype.shoot = function(x, y){
-    this.bullets.push(new PVector(this.pos.x, this.pos.y));
-    this.bulletDir.push(new PVector(x-this.pos.x, y-this.pos.y));
-    var l = this.bulletDir.length;
-    this.bulletDir[l-1].normalize();
-    this.bulletDir[l-1].scale(3);
-};
+
 
 var user = new hero(50, 300);
 
@@ -106,6 +98,7 @@ var user = new hero(50, 300);
 
 var zombie = function(x, y){
     this.pos = new PVector(x, y);
+    this.step = new PVector(0,0);
     this.a = 0;
     this.p1 = random(0, 1);
     this.p2 = random(0, 1);
@@ -159,6 +152,8 @@ zombie.prototype.draw = function() {
     if(this.p1 < 0.33){
         fill(231, 247, 108);
         arc(0, -36, 15, 15, 180, 360); 
+        fill(255, 0, 0);
+        bezier(-5, 5, -4, -13, -1, 5, 4, -15);
     }
     
     //Draw Brown Hair
@@ -178,9 +173,16 @@ zombie.prototype.draw = function() {
         strokeWeight(1);
         stroke(0, 0, 0);
         fill(255, 0, 0);
-        bezier(-5, -5, 8, 1, 1, 8, 5, 5);
+        bezier(-5, -5, -8, -1, 1, 8, 5, 5);
     }
     popMatrix();
+};
+
+zombie.prototype.move = function(){
+        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
+        this.step.normalize();
+        this.step.mult(0.5);
+        this.pos.add(this.step);   
 };
 
 var zombies = [];
@@ -189,14 +191,7 @@ zombies.push(new zombie(200, 290));
 zombies.push(new zombie(220, 350));
 zombies.push(new zombie(260, 320));
 
-/********** Shoot Bullet **********/
-var shootBullet = function(){
-    for(var i=0; i<user.bullets.length; i++){
-        user.bullets[i].add(user.bulletDir[i]);
-        point(user.bullets[i].x, user.bullets[i].y);
-        
-    }
-};
+
 
 
 /********** Map 1 **********/
@@ -222,20 +217,43 @@ var drawMap1 = function(){
     }    
     vertex(map1[0].x, map1[0].y);
     endShape();
+    
 };
 
+
+/**********  USER INPUT **********/
 mouseClicked = function(){
   if (gameState === 0){
     gameState = 1;//Move on past start screen
-    zombies[0].pos.set(100,100);
-    zombies[1].pos.set(150, 50);
-    zombies[2].pos.set(200, 75);
-    zombies[3].pos.set(180, 90);
+    zombies[0].pos.set(-100,-100);
+    zombies[1].pos.set(-150, -50);
+    zombies[2].pos.set(-200, -75);
+    zombies[3].pos.set(-180, -90);
     user.pos.set(0, 0);
   }
   else{
       user.shoot();
   }
+};
+
+document.onkeypress = function(e){
+    e = e || event;
+    var chr = getChar(e);
+    if(chr.toLowerCase === 'a'){
+        
+    }
+    else if(chr.toLowerCase === 's'){
+        
+    }
+    else if(chr.toLowerCase === 'd'){
+        
+    }
+    else if(chr.toLowerCase === 'w'){
+           
+    }
+    else{
+        
+    }
 };
 
 
@@ -254,35 +272,48 @@ var draw = function(){
 		    stroke(0, 0, 0);
 		    fill(255, 255, 255);
 		    textSize(30);
-		    text("Zombie Island", 100, 100);
+		    text("Zombie Island", 100, 75);
 		    textSize(20);
-		    text("ECE 4525 - Final Project", 90, 140);
-		    text("Andrew Bryant", 130, 170);
+		    text("ECE 4525 - Final Project", 90, 110);
+		    text("Andrew Bryant", 130, 130);
+		    text("Survive the zombie apocolypse.", 50, 160);
+		    text("Use your mouse to shoot. Use the keys:", 20, 180);
+		    text("W,A,S,D to move UP,LEFT,DOWN,RIGHT", 10, 200);
+		    text("Click to start game", 115, 220);
+		    
 		    zombies[0].draw();
 		    zombies[1].draw();
 		    zombies[2].draw();
 		    zombies[3].draw();
 		    user.draw();
+		    
 		    stroke(300, 300, 0);
 		    triangle(user.pos.x+50, user.pos.y-5, user.pos.x+60, user.pos.y, user.pos.x+60, user.pos.y-10);
 		    line(user.pos.x + 90, user.pos.y-5, user.pos.x + 100, user.pos.y-5);
 		    line(user.pos.x + 70, user.pos.y-5, user.pos.x + 80, user.pos.y-5);
 		    line(user.pos.x + 110, user.pos.y-5, user.pos.x + 120, user.pos.y-5);
+		    fill(255, 123, 0);
 			stroke(0, 0, 0);
 			break;
 			
 		case 1:
 		    background(0,20,200);
 		    drawMap1();
+            translate(user.pos.x+200, user.pos.y+200);
             zombies[0].draw();
             zombies[1].draw();
             zombies[2].draw();
             zombies[3].draw();
+            zombies[0].move();
+            zombies[1].move();
+            zombies[2].move();
+            zombies[3].move();
 		    user.draw();
-			translate(user.pos.x+200, user.pos.y+200);
+
 			break;
 		
 	}
 };
+
 
 }};
