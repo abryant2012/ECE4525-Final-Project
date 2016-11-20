@@ -7,8 +7,11 @@ Final Project
 ECE 4525
 Last edited 10/31/2016
 
-Description: Final Project 
-        
+Description: Final Project. Zombie survival game, last
+as long as you can. All zombies in the game are random,
+including their clothing, scars, hair color, and speed.
+Use W, A, S, D keys to move UP, LEFT, DOWN, RIGHT, 
+respectively. Use the mouse to shoot.
 
 */
 
@@ -181,9 +184,8 @@ zombie.prototype.draw = function() {
 zombie.prototype.move = function(){
         this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
         this.step.normalize();
-        this.step.mult(0.1);
-        this.pos.add(this.step);    
-};
+        this.step.mult(0.5);
+        this.pos.add(this.step);   
 };
 
 var zombies = [];
@@ -293,5 +295,6 @@ var draw = function(){
 		
 	}
 };
+
 
 }};
