@@ -263,16 +263,17 @@ mouseClicked = function(){
 };
 
 keyPressed = function(){
-    if(keyCode === UP){
+    var k = keyCode;
+    if(k === UP){
         user.pos.y -= 10;    
     }
-    if(keyCode === DOWN){
+    if(k === DOWN){
         user.pos.y += 10;    
     }
-    if(keyCode === LEFT){
+    if(k === LEFT){
         user.pos.x -= 10;    
     }
-    if(keyCode === RIGHT){
+    if(k === RIGHT){
         user.pos.x += 10;    
     }
 };
