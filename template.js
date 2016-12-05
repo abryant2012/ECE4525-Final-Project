@@ -104,6 +104,7 @@ var zombie = function(x, y){
     this.p1 = random(0, 1);
     this.p2 = random(0, 1);
     this.p3 = random(0, 1);
+    this.speed = random(0.5, 1);
 };
 
 zombie.prototype.draw = function() {
@@ -195,12 +196,14 @@ zombies.push(new zombie(260, 320));
 
 
 /********** Shooting *********/
+//Bullets array
+var bullets = [];
 
-var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x+50, user.pos.y);
-    this.dest = new PVector(x, y);
-    this.step = new PVector(user.pos.x - x, user.pos.y - y);
-    this.step.normalize();
+var shoot = function(){
+    this.pos = new PVector();
+    this.dest = new PVector();
+    this.step = new PVector();
+
 };
 
 shoot.prototype.draw = function() {
@@ -209,12 +212,9 @@ shoot.prototype.draw = function() {
     strokeWeight(1);
 };
 
-var ind = 0;
 shoot.prototype.move = function(){
-    this.pos.add(this.step);       
+    this.pos.add(this.step);
 };
-
-var bullets = [];
 
 
 
@@ -251,26 +251,31 @@ mouseClicked = function(){
     gameState = 1;//Move on past start screen
     zombies[0].pos.set(-100,-100);
     zombies[1].pos.set(-150, -50);
-    zombies[2].pos.set(-200, -75);
+    zombies[2].pos.set(-250, -75);
     zombies[3].pos.set(-180, -90);
     user.pos.set(0, 0);
   }
-  if(gameState === 1){
-    bullets.push( new shoot(mouseX, mouseY) );    
+  else if(gameState === 1){
+    var b = new shoot();
+    b.pos.set(user.pos.x, user.pos.y);
+    b.dest.set(mouseX, mouseY);
+    b.step.set(user.pos.x-mouseX, user.pos.y-mouseY);
+    b.step.normalize();
+    bullets.push(b);
   }
 };
 
 keyPressed = function(){
-    if(keyCode === UP || keyCode === 'W'){
+    if(keyCode === UP){
         user.pos.y -= 10;    
     }
-    if(keyCode === DOWN || keyCode === 'S'){
+    if(keyCode === DOWN){
         user.pos.y += 10;    
     }
-    if(keyCode === LEFT || keyCode === 'A'){
+    if(keyCode === LEFT){
         user.pos.x -= 10;    
     }
-    if(keyCode === RIGHT || keyCode === 'D'){
+    if(keyCode === RIGHT){
         user.pos.x += 10;    
     }
 };
@@ -333,6 +338,7 @@ var draw = function(){
                 bullets[i].move();
                 i++;
             }
+            smooth();
 			break;
 		
 	}
