@@ -183,6 +183,7 @@ zombie.prototype.move = function(){
 	if(frameCount % 5 === 0){
 	    this.step = PVector.sub(user.pos, this.pos);
             this.step.normalize();
+	    this.step.mult(0.1);
             this.pos.add(this.step);   
 	}
 };
