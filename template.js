@@ -339,6 +339,9 @@ mousePressed = function(){
     zombies[1].pos.set(-150, -50);
     zombies[2].pos.set(-250, -75);
     zombies[3].pos.set(-180, -90);
+    while(bullets.length !== 0){
+        bullets.splice(0,1);
+    }
     user.pos.set(200, 200);
   }
   else if(gameState === 1){ 
@@ -348,6 +351,9 @@ mousePressed = function(){
         zombies.push(new zombie(-300, -300, 2));
         zombies.push(new zombie(0, -350, 2));
         user.pos.set(200, 200);
+        while(bullets.length !== 0){
+            bullets.splice(0,1);
+        }
         gameState = 2;
     }
     else{bullets.push(new shoot(mouseX, mouseY));}
