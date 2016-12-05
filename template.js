@@ -185,7 +185,6 @@ zombie.prototype.move = function(){
             this.step.normalize();
             this.pos.add(this.step);   
 	}
-	frameCount++;
 };
 
 var zombies = [];
@@ -295,6 +294,4 @@ var draw = function(){
 		
 	}
 };
-
-
 }};
