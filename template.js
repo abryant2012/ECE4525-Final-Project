@@ -157,7 +157,7 @@ zombie.prototype.draw = function() {
     //Draw Brown Hair
     else if(this.p1 > 0.67){
         fill(173, 118, 0);
-//        arc(0, -36, 15, Math.PI, 0);
+        arc(0, -36, 15, Math.PI, 0);
         fill(255, 0, 0);
         bezier(-5, -5, 8, 1, 2, 2, 8, 5);
     }
@@ -177,11 +177,10 @@ zombie.prototype.draw = function() {
 };
 
 zombie.prototype.move = function(){
-	if(frameCount % 5 === 0){
-	        this.step = PVector.sub(user.pos, this.pos);
-            this.step.normalize();
-            this.pos.add(this.step);   
-	}
+	this.step = PVector.sub(user.pos, this.pos);
+        this.step.normalize();
+        this.pos.add(this.step);   
+	
 	
 	if(dist(this.pos.x, this.pos.y, 
 	        user.pos.x, user.pos.y) < 30){
