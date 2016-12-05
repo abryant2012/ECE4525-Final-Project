@@ -184,7 +184,7 @@ zombie.prototype.draw = function() {
 zombie.prototype.move = function(){
         this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
         this.step.normalize();
-        this.step.mult(0.1);
+        this.step.mult(0.01);
         this.pos.add(this.step);   
 };
 
