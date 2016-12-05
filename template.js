@@ -15,7 +15,6 @@ respectively. Use the mouse to shoot.
 
 var gameState = 0;//Keep track of level & gamestate
 
-
 /********** Hero(user) Obj **********/
 
 var hero = function(x, y){
@@ -179,21 +178,14 @@ zombie.prototype.draw = function() {
     }
     popMatrix();
 };
-var fc = 0;
+
 zombie.prototype.move = function(){
-	if(fc % 5 === 0){
+	if(frameCount % 5 === 0){
 	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
             this.step.normalize();
+            this.step.mult(0.5);
             this.pos.add(this.step);   
 	}
-	fc++;
-};
-
-zombie.prototype.norm = function(){
-    var m = this.step.mag();
-    if(m>0){
-        this.step = this.step.div(m);    
-    }
 };
 
 var zombies = [];
@@ -228,17 +220,18 @@ shoot.prototype.move = function(i){
             this.pos.x, this.pos.y) > 400){
         bullets.splice(i,1);
     }
-    
-    var z = 0;
-    while(z < zombies.length){
-        if(dist(zombies[z].pos.x, zombies[z].pos.y,
-                bullets[i].pos.x, bullets[i].pos.y)<30){
-            
-            zombies.splice(z, 1);            
+    else{
+        var z = 0;
+        while(z < zombies.length){
+            if(dist(zombies[z].pos.x, zombies[z].pos.y,
+                    bullets[i].pos.x, bullets[i].pos.y)<30){
+                zombies.splice(z, 1);            
+                
+                bullets.splice(i,1);
+            }
+            z++;
         }
-        z++;
     }
-    
 };
 
 
