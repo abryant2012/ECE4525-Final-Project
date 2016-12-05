@@ -182,11 +182,13 @@ zombie.prototype.draw = function() {
 };
 
 zombie.prototype.move = function(){
-        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
-        this.step.normalize();
-	this.step.mult(0.01);
-        this.step.scale(0.5);
-        this.pos.add(this.step);   
+	if(frameCount % 10 === 0){
+	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
+        	this.step.normalize();
+		this.step.mult(0.01);
+        	this.step.scale(0.5);
+        	this.pos.add(this.step);   
+	}
 };
 
 var zombies = [];
