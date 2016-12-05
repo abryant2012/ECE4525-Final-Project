@@ -22,7 +22,7 @@ var hero = function(x, y){
     
 };
 
-hero.prototype.draw = function() {
+hero.prototype.draw_front = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
     //Draw Head
@@ -83,6 +83,47 @@ hero.prototype.draw = function() {
     fill(255, 217, 66);
     ellipse(0, 0, 8, 5);
     ellipse(25, 0, 8, 5);
+    popMatrix();
+};
+
+hero.prototype.draw_back = function() {
+    pushMatrix();
+    translate(this.pos.x, this.pos.y);
+    //Draw Head
+    fill(255, 217, 66);
+    rect(-4, -25, 8, 8);
+    ellipse(0, -30, 15, 20);
+    fill(0, 0, 0);
+
+    fill(35, 117, 2);
+    ellipse(0, -32, 15, 15);
+    
+    
+    //Draw Legs
+    fill(50, 50, 50);
+    rect(-7, 10, 7, 25, 5);
+    rect(0, 10, 7, 25, 5);
+    
+    //Draw Feet
+    fill(0, 0, 0);
+    rect(-9, 33, 9, 5, 4);
+    rect(0, 33, 9, 5, 4);
+    
+    
+    //Start shirt
+    fill(200, 200, 200);
+    rect(8, -15, 4, 4);
+    rect(10, -15, 4, 13);
+    rect(2, -2, 12, 4);
+    rect(-12, -15, 4, 4);
+    rect(-14, -15, 4, 13);
+    rect(-14,-2, 12, 4);
+    rect(-8, -18, 16, 30, 5);
+    
+    //Draw Guns
+    fill(135, 73, 3);
+    ellipse(9, -2, 6, 12);
+    
     popMatrix();
 };
 
@@ -201,7 +242,7 @@ zombies.push(new zombie(260, 320, 1));
 var bullets = [];
 
 var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x+50, user.pos.y);
+    this.pos = new PVector(user.pos.x, user.pos.y);
     this.dest = new PVector(x, y);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
@@ -306,6 +347,7 @@ mousePressed = function(){
         zombies.push(new zombie(-200, -300, 2));
         zombies.push(new zombie(-300, -300, 2));
         zombies.push(new zombie(0, -350, 2));
+        user.pos.set(200, 200);
         gameState = 2;
     }
     else{bullets.push(new shoot(mouseX, mouseY));}
@@ -363,7 +405,7 @@ var draw = function(){
 		    zombies[1].draw();
 		    zombies[2].draw();
 		    zombies[3].draw();
-		    user.draw();
+		    user.draw_front();
 		    
 		    stroke(300, 300, 0);
 		    triangle(user.pos.x+50, user.pos.y-5, user.pos.x+60, user.pos.y, user.pos.x+60, user.pos.y-10);
@@ -380,8 +422,7 @@ var draw = function(){
 		    
             translate(-user.pos.x + 200, -user.pos.y + 200);
             drawMap1();
-            user.draw();
-
+            
             var c = 0;
             while(c<zombies.length){
                 zombies[c].move();
@@ -394,6 +435,7 @@ var draw = function(){
                 bullets[i].move(i);
                 i++;
             }
+            user.draw_back();
             popMatrix();
             if(c === 0){
                 fill(255, 0, 0);
@@ -409,8 +451,7 @@ var draw = function(){
 		    
             translate(-user.pos.x + 200, -user.pos.y + 200);
             drawMap2();
-            user.draw();
-
+            
             var c = 0;
             while(c<zombies.length){
                 zombies[c].move();
@@ -423,6 +464,9 @@ var draw = function(){
                 bullets[i].move(i);
                 i++;
             }
+            user.draw_back();
+
+            
             popMatrix();
             if(c === 0){
                 fill(255, 0, 0);
