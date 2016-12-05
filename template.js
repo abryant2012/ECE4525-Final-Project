@@ -33,7 +33,7 @@ hero.prototype.draw = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-//    arc(0, -36, 15, 15, 180, 360);
+    arc(0, -36, 15, Math.PI, 0);
     
     //Draw the Eyes
     fill(255, 255, 255);
@@ -149,7 +149,7 @@ zombie.prototype.draw = function() {
     //Draw Blonde Hair
     if(this.p1 < 0.33){
         fill(231, 247, 108);
-//        arc(0, -36, 15, 15, 180, 360); 
+        arc(0, -36, 15, Math.PI, 0); 
         fill(255, 0, 0);
         bezier(-5, 5, -4, -13, -1, 5, 4, -15);
     }
@@ -157,7 +157,7 @@ zombie.prototype.draw = function() {
     //Draw Brown Hair
     else if(this.p1 > 0.67){
         fill(173, 118, 0);
-//        arc(0, -36, 15, 15, 180, 360);
+//        arc(0, -36, 15, Math.PI, 0);
         fill(255, 0, 0);
         bezier(-5, -5, 8, 1, 2, 2, 8, 5);
     }
