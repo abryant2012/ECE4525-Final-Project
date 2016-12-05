@@ -14,7 +14,7 @@ respectively. Use the mouse to shoot.
 */
 
 var gameState = 0;//Keep track of level & gamestate
-var frameCount = 0;
+
 /********** Hero(user) Obj **********/
 
 var hero = function(x, y){
@@ -197,12 +197,10 @@ zombies.push(new zombie(260, 320));
 /********** Shooting *********/
 
 var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x, user.pos.y);
+    this.pos = new PVector(user.pos.x+50, user.pos.y);
     this.dest = new PVector(x, y);
-    this.step = new PVector();
-    this.step.set(this.pos.x - this.dest.x, this.pos.y - this.dest.y);
+    this.step = new PVector(user.pos.x - x, user.pos.y - y);
     this.step.normalize();
-    this.step.div(2);
 };
 
 shoot.prototype.draw = function() {
@@ -263,17 +261,16 @@ mouseClicked = function(){
 };
 
 keyPressed = function(){
-    var k = keyCode;
-    if(k === UP){
+    if(keyCode === UP || keyCode === 'W'){
         user.pos.y -= 10;    
     }
-    if(k === DOWN){
+    if(keyCode === DOWN || keyCode === 'S'){
         user.pos.y += 10;    
     }
-    if(k === LEFT){
+    if(keyCode === LEFT || keyCode === 'A'){
         user.pos.x -= 10;    
     }
-    if(k === RIGHT){
+    if(keyCode === RIGHT || keyCode === 'D'){
         user.pos.x += 10;    
     }
 };
