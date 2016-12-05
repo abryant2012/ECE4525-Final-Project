@@ -264,7 +264,16 @@ mouseClicked = function(){
 
 keyPressed = function(){
     if(keyCode === UP){
-        user.pos.y -= 20;    
+        user.pos.y -= 10;    
+    }
+    if(keyCode === DOWN){
+        user.pos.y += 10;    
+    }
+    if(keyCode === LEFT){
+        user.pos.x -= 10;    
+    }
+    if(keyCode === RIGHT){
+        user.pos.x += 10;    
     }
 };
 
@@ -288,8 +297,8 @@ var draw = function(){
 		    text("ECE 4525 - Final Project", 90, 110);
 		    text("Andrew Bryant", 130, 130);
 		    text("Survive the zombie apocolypse.", 50, 160);
-		    text("Use your mouse to shoot. Use the keys:", 20, 180);
-		    text("W,A,S,D to move UP,LEFT,DOWN,RIGHT", 10, 200);
+		    text("Use your mouse to shoot. Use the arrow", 20, 180);
+		    text("keys to move UP,LEFT,DOWN,RIGHT", 30, 200);
 		    text("Click to start game", 115, 220);
 		    
 		    zombies[0].draw();
