@@ -33,7 +33,7 @@ hero.prototype.draw = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-    arc(0, -36, 15, 15, 180, 360);
+    arc(0, -36, 15, 15, 0, Math.PI);
     
     //Draw the Eyes
     fill(255, 255, 255);
@@ -180,7 +180,7 @@ zombie.prototype.draw = function() {
 };
 var fc = 0;
 zombie.prototype.move = function(){
-	if(fc % 20 === 0){
+	if(fc % 5 === 0){
 	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
             this.step.normalize();
             this.pos.add(this.step);   
@@ -200,7 +200,7 @@ zombies.push(new zombie(260, 320));
 var bullets = [];
 
 var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x, user.pos.y);
+    this.pos = new PVector(user.pos.x+50, user.pos.y);
     this.dest = new PVector(x, y);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
@@ -213,8 +213,24 @@ shoot.prototype.draw = function() {
     strokeWeight(1);
 };
 
-shoot.prototype.move = function(){
+shoot.prototype.move = function(i){
     this.pos.add(this.step);    
+    
+    if(dist(user.pos.x, user.pos.y,
+            this.pos.x, this.pos.y) > 400){
+        bullets.splice(i,1);
+    }
+    
+    var z = 0;
+    while(z < zombies.length){
+        if(dist(zombies[z].pos.x, zombies[z].pos.y,
+                bullets[i].pos.x, bullets[i].pos.y)<30){
+            
+            zombies.splice(z, 1);            
+        }
+        z++;
+    }
+    
 };
 
 
@@ -242,7 +258,6 @@ var drawMap1 = function(){
     }    
     vertex(map1[0].x, map1[0].y);
     endShape();
-    
 };
 
 
@@ -254,7 +269,7 @@ mousePressed = function(){
     zombies[1].pos.set(-150, -50);
     zombies[2].pos.set(-250, -75);
     zombies[3].pos.set(-180, -90);
-    user.pos.set(0, 0);
+    user.pos.set(200, 200);
   }
   else{
     bullets.push(new shoot(mouseX, mouseY));
@@ -318,24 +333,29 @@ var draw = function(){
 		case 1:
 		    pushMatrix();
 		    background(0,20,200);
+		    
             translate(-user.pos.x + 200, -user.pos.y + 200);
-		    drawMap1();
+            drawMap1();
             user.draw();
-            zombies[0].draw();
-            zombies[1].draw();
-            zombies[2].draw();
-            zombies[3].draw();
-            zombies[0].move();
-            zombies[1].move();
-            zombies[2].move();
-            zombies[3].move();
+
+            var z = 0;
+            while(z<zombies.length){
+                zombies[z].move();
+                zombies[z].draw();
+                z++;
+            }
             var i = 0;
             while(i < bullets.length){
                 bullets[i].draw();
-                bullets[i].move();
+                bullets[i].move(i);
                 i++;
             }
             popMatrix();
+            if(z === 0){
+                fill(255, 0, 0);
+                text("Level 1 Cleared!", 100, 100);
+                text("Press Enter to Go to Level 2", 50, 130);
+            }
 			break;
 		
 	}
