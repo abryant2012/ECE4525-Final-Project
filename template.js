@@ -33,7 +33,7 @@ hero.prototype.draw = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-    arc(0, -36, 15, 15, 0, Math.PI);
+    arc(0, -36, 15, 15, 180, 360);
     
     //Draw the Eyes
     fill(255, 255, 255);
