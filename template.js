@@ -33,7 +33,7 @@ hero.prototype.draw = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-    arc(0, -36, 15, Math.PI, 0);
+//    arc(0, -36, 15, Math.PI, 0);
     
     //Draw the Eyes
     fill(255, 255, 255);
@@ -93,9 +93,10 @@ var user = new hero(50, 300);
 
 /********** Zombie Obj **********/
 
-var zombie = function(x, y){
+var zombie = function(x, y, h){
     this.pos = new PVector(x, y);
     this.step = new PVector(0,0);
+    this.h = h;
     this.a = 0;
     this.p1 = random(0, 1);
     this.p2 = random(0, 1);
@@ -149,7 +150,7 @@ zombie.prototype.draw = function() {
     //Draw Blonde Hair
     if(this.p1 < 0.33){
         fill(231, 247, 108);
-        arc(0, -36, 15, Math.PI, 0); 
+//        arc(0, -36, 15, Math.PI, 0); 
         fill(255, 0, 0);
         bezier(-5, 5, -4, -13, -1, 5, 4, -15);
     }
@@ -157,7 +158,7 @@ zombie.prototype.draw = function() {
     //Draw Brown Hair
     else if(this.p1 > 0.67){
         fill(173, 118, 0);
-        arc(0, -36, 15, Math.PI, 0);
+//        arc(0, -36, 15, Math.PI, 0);
         fill(255, 0, 0);
         bezier(-5, -5, 8, 1, 2, 2, 8, 5);
     }
@@ -189,10 +190,10 @@ zombie.prototype.move = function(){
 };
 
 var zombies = [];
-zombies.push(new zombie(330, 305));
-zombies.push(new zombie(200, 290));
-zombies.push(new zombie(220, 350));
-zombies.push(new zombie(260, 320));
+zombies.push(new zombie(330, 305, 1));
+zombies.push(new zombie(200, 290, 1));
+zombies.push(new zombie(220, 350, 1));
+zombies.push(new zombie(260, 320, 1));
 
 
 /********** Shooting *********/
@@ -226,9 +227,11 @@ shoot.prototype.move = function(i){
         while(z < zombies.length){
             if(dist(zombies[z].pos.x, zombies[z].pos.y,
                     bullets[i].pos.x, bullets[i].pos.y)<30){
-                zombies.splice(z, 1);            
-                
+                zombies[z].h--;
                 bullets.splice(i,1);
+                if(zombies[z].h <= 0){
+                    zombies.splice(z, 1);    
+                }
                 return;
             }
             z++;
@@ -251,7 +254,6 @@ var map1 = [
         new PVector(250, -200),
         new PVector(0, -400),
         new PVector(-250, -350)
-        
     ];
 var drawMap1 = function(){
     beginShape();
@@ -264,6 +266,30 @@ var drawMap1 = function(){
 };
 
 
+/********** Map 2 **********/
+var map2 = [
+        new PVector(-500, 0),
+        new PVector(-250, 50),
+        new PVector(-300, 450), 
+        new PVector(-100, 400),
+        new PVector(100, 550),
+        new PVector(200, 500),
+        new PVector(400, 400),
+        new PVector(350, 300),
+        new PVector(250, -200),
+        new PVector(0, -400),
+        new PVector(-250, -350)
+    ];
+var drawMap2 = function(){
+    beginShape();
+    fill(235, 255, 84);
+     for (var i = 0; i < map2.length; i++) {
+        vertex(map2[i].x, map2[i].y);   
+    }    
+    vertex(map2[0].x, map2[0].y);
+    endShape();
+};
+
 /**********  USER INPUT **********/
 mousePressed = function(){
   if (gameState === 0){
@@ -274,9 +300,21 @@ mousePressed = function(){
     zombies[3].pos.set(-180, -90);
     user.pos.set(200, 200);
   }
-  else{
-    bullets.push(new shoot(mouseX, mouseY));
+  else if(gameState === 1){ 
+    if(zombies.length === 0){
+        zombies.push(new zombie(-200, -200, 2));
+        zombies.push(new zombie(-200, -300, 2));
+        zombies.push(new zombie(-300, -300, 2));
+        zombies.push(new zombie(0, -350, 2));
+        gameState = 2;
+    }
+    else{bullets.push(new shoot(mouseX, mouseY));}
   }
+  else if(gameState === 2){
+    if(zombies.length === 0){gameState = 2;}
+    else{bullets.push(new shoot(mouseX, mouseY));}
+  }
+  
 };
 
 keyPressed = function(){
@@ -360,13 +398,38 @@ var draw = function(){
             if(c === 0){
                 fill(255, 0, 0);
                 text("Level 1 Cleared!", 100, 100);
-                text("Press Enter to Go to Level 2", 50, 130);
+                text("Click to Go to Level 2", 75, 130);
             }
 			break;
 			
 		case 2:
 		    //Level 2
-		    break;
+		    pushMatrix();
+		    background(0,20,200);
+		    
+            translate(-user.pos.x + 200, -user.pos.y + 200);
+            drawMap2();
+            user.draw();
+
+            var c = 0;
+            while(c<zombies.length){
+                zombies[c].move();
+                zombies[c].draw();
+                c++;
+            }
+            var i = 0;
+            while(i < bullets.length){
+                bullets[i].draw();
+                bullets[i].move(i);
+                i++;
+            }
+            popMatrix();
+            if(c === 0){
+                fill(255, 0, 0);
+                text("Level 2 Cleared!", 100, 100);
+                text("Click to Go to Level 3", 75, 130);
+            }
+			break;
 		    
 		case 3:
 		     //Level 3
