@@ -180,7 +180,7 @@ zombie.prototype.draw = function() {
 };
 var fc = 0;
 zombie.prototype.move = function(){
-	if(fc % 5 === 0){
+	if(fc % 20 === 0){
 	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
             this.step.normalize();
             this.pos.add(this.step);   
