@@ -194,6 +194,30 @@ zombies.push(new zombie(220, 350));
 zombies.push(new zombie(260, 320));
 
 
+/********** Shooting *********/
+
+var shoot = function(x, y){
+    this.pos = new PVector(user.pos.x, user.pos.y);
+    this.dest = new PVector(x, y);
+    this.step = new PVector();
+    this.step.set(this.pos.x - this.dest.x, this.pos.y - this.dest.y);
+    this.step.normalize();
+    this.step.div(2);
+};
+
+shoot.prototype.draw = function() {
+    strokeWeight(5);
+    point(this.pos.x, this.pos.y);
+    strokeWeight(1);
+};
+
+var ind = 0;
+shoot.prototype.move = function(){
+    this.pos.add(this.step);       
+};
+
+var bullets = [];
+
 
 
 /********** Map 1 **********/
@@ -233,9 +257,16 @@ mouseClicked = function(){
     zombies[3].pos.set(-180, -90);
     user.pos.set(0, 0);
   }
+  if(gameState === 1){
+    bullets.push( new shoot(mouseX, mouseY) );    
+  }
 };
 
-
+keyPressed = function(){
+    if(keyCode === UP){
+        user.pos.y -= 20;    
+    }
+};
 
 
 /********** Draw function **********/
@@ -278,8 +309,8 @@ var draw = function(){
 			
 		case 1:
 		    background(0,20,200);
+            translate(-user.pos.x + 200, -user.pos.y + 200);
 		    drawMap1();
-            translate(user.pos.x+200, user.pos.y+200);
             user.draw();
             zombies[0].draw();
             zombies[1].draw();
@@ -289,7 +320,12 @@ var draw = function(){
             zombies[1].move();
             zombies[2].move();
             zombies[3].move();
-
+            var i = 0;
+            while(i < bullets.length){
+                bullets[i].draw();
+                bullets[i].move();
+                i++;
+            }
 			break;
 		
 	}
