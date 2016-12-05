@@ -338,11 +338,11 @@ var draw = function(){
             drawMap1();
             user.draw();
 
-            var z = 0;
-            while(z<zombies.length){
-                zombies[z].move();
-                zombies[z].draw();
-                z++;
+            var c = 0;
+            while(c<zombies.length){
+                zombies[c].move();
+                zombies[c].draw();
+                c++;
             }
             var i = 0;
             while(i < bullets.length){
