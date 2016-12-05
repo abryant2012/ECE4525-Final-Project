@@ -182,7 +182,7 @@ zombie.prototype.draw = function() {
 };
 
 zombie.prototype.move = function(){
-	if(frameCount % 10 === 0){
+	if(frameCount % 5 === 0){
 	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
         	this.step.normalize();
 		this.step.mult(0.01);
