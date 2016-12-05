@@ -15,10 +15,11 @@ respectively. Use the mouse to shoot.
 
 var gameState = 0;//Keep track of level & gamestate
 
+
 /********** Hero(user) Obj **********/
 
 var hero = function(x, y){
-    this.pos = new PVector(x, y, 0);
+    this.pos = new PVector(x, y);
     
 };
 
@@ -97,8 +98,8 @@ var user = new hero(50, 300);
 /********** Zombie Obj **********/
 
 var zombie = function(x, y){
-    this.pos = new PVector(x,y,0);
-    this.step = new PVector(0,0,0);
+    this.pos = new PVector(x, y);
+    this.step = new PVector(0,0);
     this.a = 0;
     this.p1 = random(0, 1);
     this.p2 = random(0, 1);
@@ -188,6 +189,13 @@ zombie.prototype.move = function(){
 	fc++;
 };
 
+zombie.prototype.norm = function(){
+    var m = this.step.mag();
+    if(m>0){
+        this.step = this.step.div(m);    
+    }
+};
+
 var zombies = [];
 zombies.push(new zombie(330, 305));
 zombies.push(new zombie(200, 290));
@@ -200,8 +208,8 @@ zombies.push(new zombie(260, 320));
 var bullets = [];
 
 var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x+50, user.pos.y, 0);
-    this.dest = new PVector(x, y, 0);
+    this.pos = new PVector(user.pos.x+50, user.pos.y);
+    this.dest = new PVector(x, y);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
 };
@@ -237,17 +245,17 @@ shoot.prototype.move = function(i){
 
 /********** Map 1 **********/
 var map1 = [
-        new PVector(-400, 0,0),
-        new PVector(-350, 50,0),
-        new PVector(-300, 450,0), 
-        new PVector(0, 400,0),
-        new PVector(100, 250,0),
-        new PVector(200, 300,0),
-        new PVector(400, 0,0),
-        new PVector(350, -10,0),
-        new PVector(250, -200,0),
-        new PVector(0, -400,0),
-        new PVector(-250, -350,0)
+        new PVector(-400, 0),
+        new PVector(-350, 50),
+        new PVector(-300, 450), 
+        new PVector(0, 400),
+        new PVector(100, 250),
+        new PVector(200, 300),
+        new PVector(400, 0),
+        new PVector(350, -10),
+        new PVector(250, -200),
+        new PVector(0, -400),
+        new PVector(-250, -350)
         
     ];
 var drawMap1 = function(){
