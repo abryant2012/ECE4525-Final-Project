@@ -243,7 +243,7 @@ var bullets = [];
 
 var shoot = function(x, y){
     this.pos = new PVector(user.pos.x, user.pos.y);
-    this.dest = new PVector(x-200, y-200);
+    this.dest = new PVector(x, y);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
 };
@@ -331,6 +331,30 @@ var drawMap2 = function(){
     endShape();
 };
 
+/********** Map 3 **********/
+var map3 = [
+        new PVector(-400, 0),
+        new PVector(-350, 50),
+        new PVector(-300, 450), 
+        new PVector(0, 400),
+        new PVector(100, 250),
+        new PVector(200, 300),
+        new PVector(400, 0),
+        new PVector(350, -10),
+        new PVector(250, -200),
+        new PVector(0, -400),
+        new PVector(-250, -350)    ];
+        
+var drawMap3 = function(){
+    beginShape();
+    fill(6, 153, 18);
+     for (var i = 0; i < map3.length; i++) {
+        vertex(map3[i].x, map3[i].y);   
+    }    
+    vertex(map3[0].x, map3[0].y);
+    endShape();
+};
+
 /**********  USER INPUT **********/
 mousePressed = function(){
   if (gameState === 0){
@@ -359,7 +383,17 @@ mousePressed = function(){
     else{bullets.push(new shoot(mouseX, mouseY));}
   }
   else if(gameState === 2){
-    if(zombies.length === 0){gameState = 2;}
+    if(zombies.length === 0){
+        zombies.push(new zombie(-200, -200, 3));
+        zombies.push(new zombie(-200, -300, 3));
+        zombies.push(new zombie(-300, -300, 3));
+        zombies.push(new zombie(0, -350, 3));
+        user.pos.set(200, 200);
+        while(bullets.length !== 0){
+            bullets.splice(0,1);
+        }
+        gameState = 3;
+    }
     else{bullets.push(new shoot(mouseX, mouseY));}
   }
   
@@ -482,7 +516,34 @@ var draw = function(){
 			break;
 		    
 		case 3:
-		     //Level 3
+		    //Level 3
+		    pushMatrix();
+		    background(0,20,200);
+		    
+            translate(-user.pos.x + 200, -user.pos.y + 200);
+            drawMap3();
+            
+            var c = 0;
+            while(c<zombies.length){
+                zombies[c].move();
+                zombies[c].draw();
+                c++;
+            }
+            var i = 0;
+            while(i < bullets.length){
+                bullets[i].draw();
+                bullets[i].move(i);
+                i++;
+            }
+            user.draw_back();
+
+            
+            popMatrix();
+            if(c === 0){
+                fill(255, 0, 0);
+                text("Level 3 Cleared!", 100, 100);
+                text("Click to Go to Level 4", 75, 130);
+            }
 		     break;
 		     
 		case 4:
