@@ -181,9 +181,8 @@ zombie.prototype.draw = function() {
 
 zombie.prototype.move = function(){
 	if(frameCount % 5 === 0){
-	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
+	    this.step = PVector.sub(user.pos, this.pos);
             this.step.normalize();
-            this.step.mult(0.5);
             this.pos.add(this.step);   
 	}
 };
