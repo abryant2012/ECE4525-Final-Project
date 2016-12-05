@@ -243,7 +243,7 @@ var bullets = [];
 
 var shoot = function(x, y){
     this.pos = new PVector(user.pos.x, user.pos.y);
-    this.dest = new PVector(x, y);
+    this.dest = new PVector(x-200, y-200);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
 };
