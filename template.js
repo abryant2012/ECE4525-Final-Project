@@ -14,7 +14,7 @@ respectively. Use the mouse to shoot.
 */
 
 var gameState = 0;//Keep track of level & gamestate
-
+var frameCount = 0;
 /********** Hero(user) Obj **********/
 
 var hero = function(x, y){
@@ -185,6 +185,7 @@ zombie.prototype.move = function(){
             this.step.normalize();
             this.pos.add(this.step);   
 	}
+	frameCount++;
 };
 
 var zombies = [];
