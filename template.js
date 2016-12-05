@@ -33,7 +33,7 @@ hero.prototype.draw = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-    //arc(0, -36, 15, Math.PI, 0);
+//    arc(0, -36, 15, 15, 180, 360);
     
     //Draw the Eyes
     fill(255, 255, 255);
@@ -86,9 +86,6 @@ hero.prototype.draw = function() {
     popMatrix();
 };
 
-hero.prototype.move = function(){
-    
-};
 
 
 
@@ -152,7 +149,7 @@ zombie.prototype.draw = function() {
     //Draw Blonde Hair
     if(this.p1 < 0.33){
         fill(231, 247, 108);
-        //arc(0, -36, 15, 15, 180, 360); 
+//        arc(0, -36, 15, 15, 180, 360); 
         fill(255, 0, 0);
         bezier(-5, 5, -4, -13, -1, 5, 4, -15);
     }
@@ -160,7 +157,7 @@ zombie.prototype.draw = function() {
     //Draw Brown Hair
     else if(this.p1 > 0.67){
         fill(173, 118, 0);
-        //arc(0, -36, 15, 15, 180, 360);
+//        arc(0, -36, 15, 15, 180, 360);
         fill(255, 0, 0);
         bezier(-5, -5, 8, 1, 2, 2, 8, 5);
     }
@@ -181,10 +178,14 @@ zombie.prototype.draw = function() {
 
 zombie.prototype.move = function(){
 	if(frameCount % 5 === 0){
-	    this.step = PVector.sub(user.pos, this.pos);
+	        this.step = PVector.sub(user.pos, this.pos);
             this.step.normalize();
-	    this.step.mult(0.01);
             this.pos.add(this.step);   
+	}
+	
+	if(dist(this.pos.x, this.pos.y, 
+	        user.pos.x, user.pos.y) < 30){
+	    gameState = 5;            
 	}
 };
 
@@ -219,6 +220,7 @@ shoot.prototype.move = function(i){
     if(dist(user.pos.x, user.pos.y,
             this.pos.x, this.pos.y) > 400){
         bullets.splice(i,1);
+        return;
     }
     else{
         var z = 0;
@@ -228,6 +230,7 @@ shoot.prototype.move = function(i){
                 zombies.splice(z, 1);            
                 
                 bullets.splice(i,1);
+                return;
             }
             z++;
         }
@@ -292,19 +295,22 @@ keyPressed = function(){
     }
 };
 
+var drawBlood = function(){
+            fill(255, 0, 0);
+		    noStroke();
+		    bezier(50, 0, 75,200, 100, 150, 150, 0);
+		    bezier(250, 0, 300, 300, 310, 300, 420, 0);
+		    bezier(0,0, 20, 100, 30, 350, 50, 0);
+		    bezier(150, 0, 210, 300, 250, 310, 275, 0);
+		    stroke(0, 0, 0);    
+};
 
 /********** Draw function **********/
 var draw = function(){
 	switch(gameState){
 		case 0:
 		    background(100, 100, 100);
-		    fill(255, 0, 0);
-		    noStroke();
-		    bezier(50, 0, 75,200, 100, 150, 150, 0);
-		    bezier(250, 0, 300, 300, 310, 300, 420, 0);
-		    bezier(0,0, 20, 100, 30, 350, 50, 0);
-		    bezier(150, 0, 210, 300, 250, 310, 275, 0);
-		    stroke(0, 0, 0);
+		    drawBlood();
 		    fill(255, 255, 255);
 		    textSize(30);
 		    text("Zombie Island", 100, 75);
@@ -358,7 +364,24 @@ var draw = function(){
                 text("Press Enter to Go to Level 2", 50, 130);
             }
 			break;
-		
+			
+		case 2:
+		    //Level 2
+		    break;
+		    
+		case 3:
+		     //Level 3
+		     break;
+		     
+		case 4:
+		    //You Win!
+		    break;
+		    
+		case 5:
+		    //You Lose!
+		    drawBlood();
+		    fill(0, 0, 0);
+		    text("Game Over", 150, 300);
 	}
 };
 }};
