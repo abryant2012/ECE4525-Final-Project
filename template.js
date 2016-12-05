@@ -351,7 +351,7 @@ var draw = function(){
                 i++;
             }
             popMatrix();
-            if(z === 0){
+            if(c === 0){
                 fill(255, 0, 0);
                 text("Level 1 Cleared!", 100, 100);
                 text("Press Enter to Go to Level 2", 50, 130);
