@@ -19,8 +19,7 @@ var gameState = 0;//Keep track of level & gamestate
 
 var hero = function(x, y){
     this.pos = new PVector(x, y);
-    this.step = new PVector(0,0);
-    this.a = 0;
+    
 };
 
 hero.prototype.draw = function() {
@@ -179,13 +178,14 @@ zombie.prototype.draw = function() {
     }
     popMatrix();
 };
-
+var fc = 0;
 zombie.prototype.move = function(){
-	if(frameCount % 5 === 0){
+	if(fc % 5 === 0){
 	        this.step.set(user.pos.x - this.pos.x, user.pos.y - this.pos.y);
             this.step.normalize();
             this.pos.add(this.step);   
 	}
+	fc++;
 };
 
 var zombies = [];
@@ -199,21 +199,22 @@ zombies.push(new zombie(260, 320));
 //Bullets array
 var bullets = [];
 
-var shoot = function(){
-    this.pos = new PVector();
-    this.dest = new PVector();
-    this.step = new PVector();
-
+var shoot = function(x, y){
+    this.pos = new PVector(user.pos.x, user.pos.y);
+    this.dest = new PVector(x, y);
+    this.step = PVector.sub(this.dest, this.pos);
+    this.step.normalize();
 };
 
 shoot.prototype.draw = function() {
-    strokeWeight(5);
-    point(this.pos.x, this.pos.y);
+    fill(0, 0, 0);
+    strokeWeight(3);
+    point(this.pos.x,this.pos.y);
     strokeWeight(1);
 };
 
 shoot.prototype.move = function(){
-    this.pos.add(this.step);
+    this.pos.add(this.step);    
 };
 
 
@@ -246,7 +247,7 @@ var drawMap1 = function(){
 
 
 /**********  USER INPUT **********/
-mouseClicked = function(){
+mousePressed = function(){
   if (gameState === 0){
     gameState = 1;//Move on past start screen
     zombies[0].pos.set(-100,-100);
@@ -255,13 +256,8 @@ mouseClicked = function(){
     zombies[3].pos.set(-180, -90);
     user.pos.set(0, 0);
   }
-  else if(gameState === 1){
-    var b = new shoot();
-    b.pos.set(user.pos.x, user.pos.y);
-    b.dest.set(mouseX, mouseY);
-    b.step.set(user.pos.x-mouseX, user.pos.y-mouseY);
-    b.step.normalize();
-    bullets.push(b);
+  else{
+    bullets.push(new shoot(mouseX, mouseY));
   }
 };
 
@@ -320,6 +316,7 @@ var draw = function(){
 			break;
 			
 		case 1:
+		    pushMatrix();
 		    background(0,20,200);
             translate(-user.pos.x + 200, -user.pos.y + 200);
 		    drawMap1();
@@ -338,7 +335,7 @@ var draw = function(){
                 bullets[i].move();
                 i++;
             }
-            smooth();
+            popMatrix();
 			break;
 		
 	}
