@@ -9,8 +9,15 @@ Last edited 12/9/2016
 Description: Final Project. Zombie survival game, last
 as long as you can. All zombies in the game are random,
 including their clothing, scars, hair color, and speed.
-Use the arrow keys to move. Use the mouse to aim and shoot. Each level has more zombies and the zombies 
+Use the arrow keys to move. Use the mouse to aim and shoot. 
+Each level has more zombies and the zombies 
 take one more shot to be killed than the previous level.
+
+Some unique features:
+The level number is how many shots it takes to kill zombies
+The zombies have random features including shirt color, 
+skin tone, scars, and maximum speed. 
+
 
 */
 
