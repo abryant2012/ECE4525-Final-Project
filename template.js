@@ -130,7 +130,7 @@ var zombie = function(x, y, h){
     this.speed = random(0.75, 1.25);
 };
 
-zombie.prototype.draw_front = function() {
+zombie.prototype.draw = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
     //Draw Head
@@ -208,44 +208,6 @@ zombie.prototype.draw_front = function() {
         stroke(0, 0, 0);
         fill(255, 0, 0);
         bezier(-5, -5, -8, -1, 1, 8, 5, 5);
-    }
-    popMatrix();
-};
-
-zombie.prototype.draw = function() {
-    pushMatrix();
-    translate(this.pos.x, this.pos.y);
-    rotate(Math.PI+this.a);
-    //Draw shirt
-    fill(255*this.p1, 255*this.p2, 255*this.p3);
-    rect(7, -15, 5, 20, 2);//Right arm
-    rect(-12, -15, 5, 20, 2);//Left arm
-    rect(-12, -5, 24, 10, 6);//Body
-    
-    //Draw Head and hands
-    if(this.p2 >= 0.5){
-        fill(255, 217, 66);
-    }
-    else{
-        fill(130, 82, 4);
-    }    
-    ellipse(0,0, 10, 10);
-    ellipse(10, -18, 5, 8);
-    ellipse(-9, -18, 5, 8);
-    
-    //Draw Blonde Hair
-    if(this.p1 < 0.33){
-        fill(231, 247, 108);
-    }
-    
-    //Draw Brown Hair
-    else if(this.p1 > 0.67){
-        fill(173, 118, 0);
-    }
-    
-    //Draw head wound
-    else{
-        fill(237, 0, 8);
     }
     popMatrix();
 };
@@ -547,10 +509,10 @@ var draw = function(){
 		    text("keys to move UP,LEFT,DOWN,RIGHT", 30, 200);
 		    text("Click to start game", 115, 220);
 		    
-		    zombies[0].draw_front();
-		    zombies[1].draw_front();
-		    zombies[2].draw_front();
-		    zombies[3].draw_front();
+		    zombies[0].draw();
+		    zombies[1].draw();
+		    zombies[2].draw();
+		    zombies[3].draw();
 		    user.draw_front();
 		    
 		    stroke(300, 300, 0);
