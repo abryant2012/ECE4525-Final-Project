@@ -255,7 +255,6 @@ zombie.prototype.move = function(){
     this.step.normalize();
     this.step.mult(this.speed);
     this.pos.add(this.step);   
-    this.a = PVector.angleBetween(user.pos, this.pos);
 	
 	if(dist(this.pos.x, this.pos.y, 
 	        user.pos.x, user.pos.y) < 30){
