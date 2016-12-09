@@ -23,7 +23,7 @@ var hero = function(x, y){
     this.a = 0;
 };
 
-hero.prototype.draw_front = function() {
+hero.prototype.draw = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
     //Draw Head
@@ -84,36 +84,6 @@ hero.prototype.draw_front = function() {
     ellipse(25, 0, 8, 5);
     popMatrix();
 };
-
-hero.prototype.draw_top = function() {
-    pushMatrix();
-    translate(this.pos.x, this.pos.y);
-    rotate(this.a);
-    fill(200,200,200);
-    //Body
-    rect(10, -15, 5, 20, 2);//Right arm
-    rect(-15, -4, 10, 8, 2);//Left arm
-    rect(-12, -5, 24, 10, 4);//Body
-    
-    //Helmet
-    fill(9, 140, 2);
-    ellipse(0,0, 12, 15);//Helmet
-    fill(128, 92, 2);
-    ellipse(-2, -2, 3, 8);
-    ellipse(2,5,4,2);
-    ellipse(3, -3, 2, 3);
-    
-    //Draw Hand & Gun
-    fill(255, 217, 66);
-    ellipse(13, -15, 7,8);
-    fill(75, 75, 75);
-    rect(10, -25, 4, 10);
-    
-    popMatrix();
-};
-
-
-
 
 var user = new hero(50, 300);
 
@@ -548,10 +518,10 @@ var draw = function(){
 		    text("keys to move UP,LEFT,DOWN,RIGHT", 30, 200);
 		    text("Click to start game", 115, 220);
 		    
-		    zombies[0].draw_front();
-		    zombies[1].draw_front();
-		    zombies[2].draw_front();
-		    zombies[3].draw_front();
+		    zombies[0].draw();
+		    zombies[1].draw();
+		    zombies[2].draw();
+		    zombies[3].draw();
 		    user.draw_front();
 		    
 		    stroke(300, 300, 0);
