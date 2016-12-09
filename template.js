@@ -33,7 +33,7 @@ hero.prototype.draw_front = function() {
     ellipse(0, -25, 6, 1);
     
     fill(35, 117, 2);
-    arc(0, -36, 15, Math.PI, 0);
+//    arc(0, -36, 15, Math.PI, 0);
     
     //Draw the Eyes
     fill(255, 255, 255);
@@ -63,7 +63,6 @@ hero.prototype.draw_front = function() {
     rect(10, -2, 12, 4);
     rect(-12, -15, 4, 4);
     
-    rotate(this.a);
     //Draw Gun
     fill(0, 0, 0);
     rect(-5, -7, 20, 5);
@@ -72,7 +71,6 @@ hero.prototype.draw_front = function() {
     rect(-20, -7, 15, 8);
     fill(0, 0, 0);
     rect(30, -6, 15, 3);
-    rotate(-this.a);
     
     //Finish shirt
     fill(200, 200, 200);
@@ -86,43 +84,28 @@ hero.prototype.draw_front = function() {
     popMatrix();
 };
 
-hero.prototype.draw_back = function() {
+hero.prototype.draw_top = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
-    //Draw Head
+    fill(200,200,200);
+    //Body
+    rect(10, -15, 5, 20, 2);//Right arm
+    rect(-15, -4, 10, 8, 2);//Left arm
+    rect(-12, -5, 24, 10, 4);//Body
+    
+    //Helmet
+    fill(9, 140, 2);
+    ellipse(0,0, 12, 15);//Helmet
+    fill(128, 92, 2);
+    ellipse(-2, -2, 3, 8);
+    ellipse(2,5,4,2);
+    ellipse(3, -3, 2, 3);
+    
+    //Draw Hand & Gun
     fill(255, 217, 66);
-    rect(-4, -25, 8, 8);
-    ellipse(0, -30, 15, 20);
-    fill(0, 0, 0);
-
-    fill(35, 117, 2);
-    ellipse(0, -32, 15, 15);
-    
-    
-    //Draw Legs
-    fill(50, 50, 50);
-    rect(-7, 10, 7, 25, 5);
-    rect(0, 10, 7, 25, 5);
-    
-    //Draw Feet
-    fill(0, 0, 0);
-    rect(-9, 33, 9, 5, 4);
-    rect(0, 33, 9, 5, 4);
-    
-    
-    //Start shirt
-    fill(200, 200, 200);
-    rect(8, -15, 4, 4);
-    rect(10, -15, 4, 13);
-    rect(2, -2, 12, 4);
-    rect(-12, -15, 4, 4);
-    rect(-14, -15, 4, 13);
-    rect(-14,-2, 12, 4);
-    rect(-8, -18, 16, 30, 5);
-    
-    //Draw Guns
-    fill(135, 73, 3);
-    ellipse(9, -2, 6, 12);
+    ellipse(13, -15, 7,8);
+    fill(75, 75, 75);
+    rect(10, -25, 4, 10);
     
     popMatrix();
 };
@@ -149,7 +132,12 @@ zombie.prototype.draw = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
     //Draw Head
-    fill(255, 217, 66);
+    if(this.p2 >= 0.5){
+        fill(255, 217, 66);
+    }
+    else{
+        fill(130, 82, 4);
+    }
     rect(-4, -25, 8, 8);
     ellipse(0, -30, 15, 20);
     fill(0, 0, 0);
@@ -183,15 +171,19 @@ zombie.prototype.draw = function() {
     rect(8, -15, 12, 4);
     
     //Draw Hands
-    fill(255, 217, 66);
-    ellipse(-23, -13, 8, 5);
+    if(this.p2 >= 0.5){
+        fill(255, 217, 66);
+    }
+    else{
+        fill(130, 82, 4);
+    }ellipse(-23, -13, 8, 5);
     ellipse(23, -13, 8, 5);
     
     
     //Draw Blonde Hair
     if(this.p1 < 0.33){
         fill(231, 247, 108);
-        arc(0, -36, 15, Math.PI, 0); 
+        arc(0, -36, 15, 15, Math.PI, 0); 
         fill(255, 0, 0);
         bezier(-5, 5, -4, -13, -1, 5, 4, -15);
     }
@@ -199,7 +191,7 @@ zombie.prototype.draw = function() {
     //Draw Brown Hair
     else if(this.p1 > 0.67){
         fill(173, 118, 0);
-        arc(0, -36, 15, Math.PI, 0);
+        arc(0, -36, 15, 15, Math.PI, 0);
         fill(255, 0, 0);
         bezier(-5, -5, 8, 1, 2, 2, 8, 5);
     }
@@ -220,9 +212,8 @@ zombie.prototype.draw = function() {
 
 zombie.prototype.move = function(){
 	this.step = PVector.sub(user.pos, this.pos);
-        this.step.normalize();
-        this.pos.add(this.step);   
-	
+    this.step.normalize();
+    this.pos.add(this.step);   
 	
 	if(dist(this.pos.x, this.pos.y, 
 	        user.pos.x, user.pos.y) < 30){
@@ -241,11 +232,13 @@ zombies.push(new zombie(260, 320, 1));
 //Bullets array
 var bullets = [];
 
-var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x, user.pos.y);
+var shoot = function(x, y, ux, uy){
+    this.pos = new PVector(ux+10, uy-25);
     this.dest = new PVector(x, y);
     this.step = PVector.sub(this.dest, this.pos);
-    this.step.normalize();
+    
+    //this.step.normalize();
+    this.step.mult(0.05);
 };
 
 shoot.prototype.draw = function() {
@@ -381,7 +374,7 @@ mousePressed = function(){
         }
         gameState = 2;
     }
-    else{bullets.push(new shoot(mouseX, mouseY));}
+    else{bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));}
   }
   else if(gameState === 2){
     if(zombies.length === 0){
@@ -397,11 +390,19 @@ mousePressed = function(){
         }
         gameState = 3;
     }
-    else{bullets.push(new shoot(mouseX, mouseY));}
+    else{bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));}
     
   }
   else if(gameState === 3){
-    bullets.push(new shoot(mouseX, mouseY));
+    bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));
+  }
+  
+  else if(gameState === 4){
+      
+  }
+  
+  else if(gameState === 5){
+    gameState = 0;    
   }
   
   
@@ -432,6 +433,7 @@ var drawBlood = function(){
 		    stroke(0, 0, 0);    
 };
 
+var index = 0;
 /********** Draw function **********/
 var draw = function(){
 	switch(gameState){
@@ -456,7 +458,17 @@ var draw = function(){
 		    user.draw_front();
 		    
 		    stroke(300, 300, 0);
-		    triangle(user.pos.x+50, user.pos.y-5, user.pos.x+60, user.pos.y, user.pos.x+60, user.pos.y-10);
+		    
+		    if(index < 60){
+		        triangle(user.pos.x+50, user.pos.y-5, user.pos.x+60, user.pos.y, user.pos.x+60, user.pos.y-10);
+		        index++;
+		    }
+		    else if(index < 120){
+		        index++;    
+		    }
+		    else if(index < 180){
+		        
+		    }
 		    line(user.pos.x + 90, user.pos.y-5, user.pos.x + 100, user.pos.y-5);
 		    line(user.pos.x + 70, user.pos.y-5, user.pos.x + 80, user.pos.y-5);
 		    line(user.pos.x + 110, user.pos.y-5, user.pos.x + 120, user.pos.y-5);
@@ -483,7 +495,7 @@ var draw = function(){
                 bullets[i].move(i);
                 i++;
             }
-            user.draw_back();
+            user.draw_top();
             popMatrix();
             if(c === 0){
                 fill(255, 0, 0);
@@ -512,9 +524,8 @@ var draw = function(){
                 bullets[i].move(i);
                 i++;
             }
-            user.draw_back();
+            user.draw_top();
 
-            
             popMatrix();
             if(c === 0){
                 fill(255, 0, 0);
@@ -543,7 +554,7 @@ var draw = function(){
                 bullets[i].move(i);
                 i++;
             }
-            user.draw_back();
+            user.draw_top();
 
             
             popMatrix();
