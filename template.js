@@ -87,7 +87,7 @@ hero.prototype.draw_front = function() {
 hero.prototype.draw_top = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
-    rotate(this.a);
+    rotate(degrees(this.a));
     fill(200,200,200);
     //Body
     rect(10, -15, 5, 20, 2);//Right arm
@@ -126,7 +126,7 @@ var zombie = function(x, y, h){
     this.p1 = random(0, 1);
     this.p2 = random(0, 1);
     this.p3 = random(0, 1);
-    this.speed = random(0.5, 1);
+    this.speed = random(0.75, 1.25);
 };
 
 zombie.prototype.draw = function() {
@@ -214,6 +214,7 @@ zombie.prototype.draw = function() {
 zombie.prototype.move = function(){
 	this.step = PVector.sub(user.pos, this.pos);
     this.step.normalize();
+    this.step.mult(this.speed);
     this.pos.add(this.step);   
 	
 	if(dist(this.pos.x, this.pos.y, 
@@ -234,7 +235,14 @@ zombies.push(new zombie(260, 320, 1));
 var bullets = [];
 
 var shoot = function(x, y){
-    this.pos = new PVector(user.pos.x+10, user.pos.y-25);
+    var aX=0;
+    var aY=0;
+    if(user.a === 0){aX = 10; aY = -25;}
+    if(user.a === (Math.PI*3/2)){aX = -25; aY = -11;}
+    if(user.a === Math.PI){aX = -10; aY = 25;}
+    if(user.a === Math.PI/2){aX = 25; aY = 11;}
+    
+    this.pos = new PVector(user.pos.x+aX, user.pos.y+aY);
     this.dest = new PVector(x + user.pos.x - 200, y + user.pos.y - 200);
     this.step = PVector.sub(this.dest, this.pos);
     this.step.normalize();
@@ -252,11 +260,11 @@ shoot.prototype.draw = function() {
 shoot.prototype.move = function(i){
 
     this.pos.add(this.step);
-    /*if(dist(user.pos.x, user.pos.y,
+    if(dist(user.pos.x, user.pos.y,
             this.pos.x, this.pos.y) > 400){
         bullets.splice(i,1);
         return;
-    }*/
+    }
     
     //else{
         var z = 0;
@@ -279,19 +287,16 @@ shoot.prototype.move = function(i){
 
 /********** Map 1 **********/
 
-var tileMap1 = ["",
-                ""];
-
 var map1 = [
-        new PVector(-400, 0),
-        new PVector(-350, 50),
-        new PVector(-300, 450), 
+        new PVector(-380, 0),
+        new PVector(-350, 100),
+        new PVector(-300, 350), 
         new PVector(0, 400),
-        new PVector(100, 250),
-        new PVector(200, 300),
+        new PVector(100, 350),
+        new PVector(350, 300),
         new PVector(400, 0),
-        new PVector(350, -10),
-        new PVector(250, -200),
+        new PVector(370, -10),
+        new PVector(320, -200),
         new PVector(0, -400),
         new PVector(-250, -350)
     ];
@@ -308,13 +313,13 @@ var drawMap1 = function(){
 
 /********** Map 2 **********/
 var map2 = [
-        new PVector(-500, 0),
-        new PVector(-250, 50),
-        new PVector(-300, 450), 
+        new PVector(-400, 0),
+        new PVector(-320, 50),
+        new PVector(-300, 320), 
         new PVector(-100, 400),
-        new PVector(100, 550),
-        new PVector(200, 500),
-        new PVector(400, 400),
+        new PVector(100, 420),
+        new PVector(200, 350),
+        new PVector(400, 320),
         new PVector(350, 300),
         new PVector(250, -200),
         new PVector(0, -400),
@@ -332,16 +337,16 @@ var drawMap2 = function(){
 
 /********** Map 3 **********/
 var map3 = [
-        new PVector(-400, 0),
-        new PVector(-350, 50),
+        new PVector(-370, 0),
+        new PVector(-350, 150),
         new PVector(-300, 450), 
-        new PVector(0, 400),
-        new PVector(100, 250),
+        new PVector(0, 345),
+        new PVector(100, 320),
         new PVector(200, 300),
         new PVector(400, 0),
         new PVector(350, -10),
-        new PVector(250, -200),
-        new PVector(0, -400),
+        new PVector(310, -300),
+        new PVector(0, -370),
         new PVector(-250, -350)    ];
         
 var drawMap3 = function(){
@@ -414,22 +419,23 @@ mousePressed = function(){
 
 
 keyPressed = function(){
-    if(keyCode === UP){
+    if(keyCode === UP && user.pos.y > -300){
         user.pos.y -= 10;
         user.a = 0;
     }
-    if(keyCode === DOWN){
+    if(keyCode === DOWN && user.pos.y < 300){
         user.pos.y += 10;    
         user.a = Math.PI;
     }
-    if(keyCode === LEFT){
+    if(keyCode === LEFT && user.pos.x > -300){
         user.pos.x -= 10; 
         user.a = Math.PI*3/2;
     }
-    if(keyCode === RIGHT){
+    if(keyCode === RIGHT && user.pos.x < 300){
         user.pos.x += 10;  
         user.a = Math.PI/2;
     }
+    
 };
 
 var drawBlood = function(){
