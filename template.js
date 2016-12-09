@@ -232,13 +232,13 @@ zombies.push(new zombie(260, 320, 1));
 //Bullets array
 var bullets = [];
 
-var shoot = function(x, y, ux, uy){
-    this.pos = new PVector(ux+10, uy-25);
-    this.dest = new PVector(x, y);
+var shoot = function(x, y){
+    this.pos = new PVector(user.pos.x+10, user.pos.y-25);
+    this.dest = new PVector(x + user.pos.x - 200, y + user.pos.y - 200);
     this.step = PVector.sub(this.dest, this.pos);
-    
-    //this.step.normalize();
-    this.step.mult(0.05);
+    this.step.normalize();
+    this.step.mult(3);
+
 };
 
 shoot.prototype.draw = function() {
@@ -249,18 +249,19 @@ shoot.prototype.draw = function() {
 };
 
 shoot.prototype.move = function(i){
-    this.pos.add(this.step);    
-    
-    if(dist(user.pos.x, user.pos.y,
+
+    this.pos.add(this.step);
+    /*if(dist(user.pos.x, user.pos.y,
             this.pos.x, this.pos.y) > 400){
         bullets.splice(i,1);
         return;
-    }
-    else{
+    }*/
+    
+    //else{
         var z = 0;
         while(z < zombies.length){
             if(dist(zombies[z].pos.x, zombies[z].pos.y,
-                    bullets[i].pos.x, bullets[i].pos.y)<30){
+                    this.pos.x, this.pos.y)<30){
                 zombies[z].h--;
                 bullets.splice(i,1);
                 if(zombies[z].h <= 0){
@@ -270,7 +271,7 @@ shoot.prototype.move = function(i){
             }
             z++;
         }
-    }
+    //}
 };
 
 
@@ -374,7 +375,7 @@ mousePressed = function(){
         }
         gameState = 2;
     }
-    else{bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));}
+    else{bullets.push(new shoot(mouseX, mouseY));}
   }
   else if(gameState === 2){
     if(zombies.length === 0){
@@ -390,11 +391,11 @@ mousePressed = function(){
         }
         gameState = 3;
     }
-    else{bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));}
+    else{bullets.push(new shoot(mouseX, mouseY));}
     
   }
   else if(gameState === 3){
-    bullets.push(new shoot(mouseX, mouseY, user.pos.x, user.pos.y));
+    bullets.push(new shoot(mouseX, mouseY));
   }
   
   else if(gameState === 4){
@@ -402,7 +403,7 @@ mousePressed = function(){
   }
   
   else if(gameState === 5){
-    gameState = 0;    
+
   }
   
   
