@@ -1,5 +1,5 @@
 var sketchProc=function(processingInstance){ with (processingInstance){
-size(400, 400); 
+size(800, 800); 
 frameRate(60);
 /*
 Andrew Bryant
@@ -19,7 +19,7 @@ var gameState = 0;//Keep track of level & gamestate
 
 var hero = function(x, y){
     this.pos = new PVector(x, y);
-    
+    this.a = 0;
 };
 
 hero.prototype.draw_front = function() {
@@ -87,6 +87,7 @@ hero.prototype.draw_front = function() {
 hero.prototype.draw_top = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
+    rotate(degrees(this.a));
     fill(200,200,200);
     //Body
     rect(10, -15, 5, 20, 2);//Right arm
@@ -277,6 +278,10 @@ shoot.prototype.move = function(i){
 
 
 /********** Map 1 **********/
+
+var tileMap1 = ["",
+                ""];
+
 var map1 = [
         new PVector(-400, 0),
         new PVector(-350, 50),
@@ -405,22 +410,25 @@ mousePressed = function(){
   else if(gameState === 5){
 
   }
-  
-  
 };
+
 
 keyPressed = function(){
     if(keyCode === UP){
-        user.pos.y -= 10;    
+        user.pos.y -= 10;
+        user.a = 0;
     }
     if(keyCode === DOWN){
         user.pos.y += 10;    
+        user.a = Math.PI;
     }
     if(keyCode === LEFT){
-        user.pos.x -= 10;    
+        user.pos.x -= 10; 
+        user.a = Math.PI*3/2;
     }
     if(keyCode === RIGHT){
-        user.pos.x += 10;    
+        user.pos.x += 10;  
+        user.a = Math.PI/2;
     }
 };
 
