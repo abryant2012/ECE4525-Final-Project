@@ -1,5 +1,5 @@
 var sketchProc=function(processingInstance){ with (processingInstance){
-size(800, 800); 
+size(400, 400); 
 frameRate(60);
 /*
 Andrew Bryant
@@ -87,7 +87,7 @@ hero.prototype.draw_front = function() {
 hero.prototype.draw_top = function() {
     pushMatrix();
     translate(this.pos.x, this.pos.y);
-    rotate(degrees(this.a));
+    rotate(this.a);
     fill(200,200,200);
     //Body
     rect(10, -15, 5, 20, 2);//Right arm
