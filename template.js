@@ -561,6 +561,11 @@ var draw = function(){
                 text("Level 1 Cleared!", 100, 100);
                 text("Click to Go to Level 2", 75, 130);
             }
+            else{
+                fill(255, 0, 0);
+                textSize(15);
+                text("Level 1", 10, 350);
+            }
 			break;
 			
 		case 2:
@@ -591,6 +596,11 @@ var draw = function(){
                 textSize(20);
                 text("Level 2 Cleared!", 100, 100);
                 text("Click to Go to Level 3", 75, 130);
+            }
+            else{
+                fill(255, 0, 0);
+                textSize(15);
+                text("Level 2", 10, 350);
             }
 			break;
 		    
@@ -624,6 +634,11 @@ var draw = function(){
                 text("Level 3 Cleared!", 100, 100);
                 text("Click to Go to Level 4", 75, 130);
             }
+            else{
+                fill(255, 0, 0);
+                textSize(15);
+                text("Level 3", 10, 350);
+            }
 		     break;
 
         //Level 4		     
@@ -655,6 +670,11 @@ var draw = function(){
                 textSize(20);
                 text("All Levels Cleared!", 100, 100);
                 text("You Survived!", 120, 130);
+            }
+            else{
+                fill(255, 0, 0);
+                textSize(15);
+                text("Level 4", 10, 350);
             }
 		    break;
 		    
